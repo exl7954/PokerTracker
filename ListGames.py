@@ -39,12 +39,14 @@ for f in FILES:
             link = msg["content"]
             if '?' in link:
                 link = link[0:link.index('?')]
+            if not link.startswith("https://www.pokernow.club/games/"):
+                link = link[link.find("https://www.pokernow.club/games/"):]
 
             if link not in existingGames:
                 existingGames[link] = msg["timestamp_ms"]
 
 
-print(len(existingGames))
+print("GAMES TRACKED: " + str(len(existingGames)))
 
 file = open("logs/games.json", "w")
 json.dump(existingGames, file)
