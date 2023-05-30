@@ -5,11 +5,12 @@ from PlayerChain import findPaths, matchName
 
 def makeLedger(uri: str):
     if not uri.startswith("https://"):
-        uri = uri.join("https://", uri)
+        uri = "https://" + uri
     if not "https://www.pokernow.club/games/" in uri:
         return
 
-    req = requests.get(uri+"/players_sessions")
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', 'Referer': 'https://l.messenger.com/'}
+    req = requests.get(uri+"/players_sessions", headers=headers)
     if not req.status_code == 200:
         print(req.status_code)
         return
@@ -72,7 +73,7 @@ def makeLedger(uri: str):
                     losers[loser] += winners[winner]
                     winners[winner] = 0
                     lines.append(loser + " pays " + winner + " $%.2f" % (amt/100))
-                
+
                 if losers[loser] == 0:
                     break
 
@@ -96,8 +97,8 @@ def makeLedger(uri: str):
                     winners[winner] = 0
                     lines.append(loser + " pays " + winner + " $%.2f" % (amt/100))
                     break
-        
-        
+
+
     if max(winners.values()) != 0 and max(losers.values() != 0):
         return("BIG error")
     else:
@@ -108,7 +109,5 @@ def makeLedger(uri: str):
         res += "TAXES\n"
         for l in taxes:
             res += l + "\n"
-    
-        return res
 
-print(makeLedger("https://www.pokernow.club/games/pglMsrSJs8gP5J2R9bZ8PZyYL"))
+        return res
