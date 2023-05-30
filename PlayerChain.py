@@ -1,6 +1,20 @@
 import os
 import json
 
+with open("logs/names.json") as f:
+    NAMES = json.load(f)
+    f.close()
+
+def matchName(s):
+    if s in NAMES.keys():
+        return s
+    
+    s = s.lower()
+    for name in NAMES:
+        if s in NAMES[name]:
+            return name
+    return s
+
 def getGraph():
     # get all json files in directory
     PATH = "logs/chat-logs/"
@@ -101,16 +115,20 @@ def findPaths(start, end):
                             shortest = newpath
             return shortest
 
+    
+
+    start = matchName(start)
     graph = getGraph()
     res = {}
     for player in end:
+        player = matchName(player)
         arr = find_shortest_path(graph, start, player)
         if arr is None:
-            length = 100
+            pass
         else:
-            length = len(arr)
+            res[player] = len(arr)
         
-        res[player] = length
     
-    res = sorted(res.items, key=lambda x:x[1])
+    res = sorted(res.keys(), key=lambda x:res[x])
+    return res
         
