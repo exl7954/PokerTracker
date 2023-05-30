@@ -99,6 +99,12 @@ def getGraph():
 
     return graph
 
+def saveGraph():
+    graph = getGraph()
+    with open("graph.json", "x") as f:
+        json.dump(graph, f)
+        f.close()
+
 def findPaths(start, end):
     def find_shortest_path(graph, start, end, path=[]):
             path = path + [start]
@@ -131,4 +137,3 @@ def findPaths(start, end):
     
     res = sorted(res.keys(), key=lambda x:res[x])
     return res
-        
