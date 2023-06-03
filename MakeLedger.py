@@ -5,7 +5,7 @@ from PlayerChain import findPaths, matchName
 
 def makeLedger(uri: str):
     if not uri.startswith("https://"):
-        uri = uri.join("https://", uri)
+        uri = "https://" + uri
     if not "https://www.pokernow.club/games/" in uri:
         return
 
@@ -110,5 +110,3 @@ def makeLedger(uri: str):
             res += l + "\n"
     
         return res
-
-print(makeLedger("https://www.pokernow.club/games/pglMsrSJs8gP5J2R9bZ8PZyYL"))
